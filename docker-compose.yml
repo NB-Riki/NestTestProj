@@ -1,0 +1,31 @@
+version: "3"
+services:
+
+  mysqldb:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=testDB
+      - MYSQL_ROOT_PASSWORD=0000
+      - TZ=Asia/Seoul
+  redis:
+    image: redis
+    command: redis-server --port 6379
+    ports:
+      - "6379:6379"
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
